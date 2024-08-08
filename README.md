@@ -18,7 +18,7 @@ Under review/testing. Will deploy to mainnet soon.
 
 get_tier (account, momentID)
 
-- flow-c1 scripts execute ./tiers/scripts/getTier.cdc 0xf8d6e0586b0a20c7 1
+- flow-c1 scripts execute ./tiers/scripts/get_tier.cdc 0xf8d6e0586b0a20c7 1
 
 (Admin) update_default_tier (setID: UInt32, tierRawValue: UInt8)
 
@@ -76,15 +76,21 @@ JSON looks like this:
 
 2. (Optional) Setup second emulator user
 
-- flow-c1 accounts create
-
-- flow transactions send .\topshot\transactions\setupCollection.cdc --signer=justin
+- flow-c1 keys generate
+- flow-c1 accounts create --key <public key>
+- flow-c1  transactions send .\topshot\transactions\setup_collection.cdc --signer=newaccount
+- flow-c1  transactions send .\topshot\transactions\verify_collection.cdc --signer=newaccount
+- flow-c1 scripts execute .\topshot\scripts\verify.cdc 0xnewaddress
 
 3. create_set (string)
   - flow-c1 transactions send ./topshot/transactions/create_set.cdc "First Set!"
 
 4. create_plays (metadata found inside transaction)
   - flow-c1 transactions send ./topshot/transactions/create_plays.cdc
+
+5. add_play_to_set (setID: UInt32, playID: UInt32)
+- flow-c1 transactions send ./topshot/transactions/add_play_to_set.cdc 1 1
+- flow-c1 scripts execute .\topshot\scripts\get_plays_in_set.cdc 1
 
 5. mint_moment(setID: UInt32, playID: UInt32, recipientAddr: Address)
 
@@ -94,8 +100,8 @@ or mint_moments(setID: UInt32, playID: UInt32, recipientAddr: Address)
 
 - flow-c1 transactions send ./topshot/transactions/mint_moments.cdc 1 1 5 0xf8d6e0586b0a20c7
 
-5. send_moments (recipientAddr: Address, momentIDs: [UInt32])
- - flow transactions send .\topshot\transactions\send_moments.cdc 0x01cf0e2f2f715450 [1,2,3,4,5]
+5. send_moment (recipientAddr: Address, momentID: UInt32)
+ - flow-c1 transactions send .\topshot\transactions\send_moment.cdc 0x01cf0e2f2f715450 1
 
 ## TopShot Links
 
