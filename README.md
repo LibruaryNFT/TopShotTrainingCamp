@@ -3,18 +3,16 @@
 This repo is meant as a way to share important utilities, contracts, and tools for the NBA TopShot community. It is a work in progress and will be updated as new tools are developed.
 
 Currently the repo contains the following projects:
-TopShot Tiers
-TopShot Badges
-TopSHot Emulator
+- TopShot Tiers - Designed to help find the tier and badges of NBA Top Shot moments on-chain.
+- TopShot Badges - Designed to help find the badges of NBA Top Shot moments on-chain.
+- TopShot Emulator - Designed to help anyone with deploying TopShot locally.
+- TopShot Links - An aggregated list of helpful resources.
 
 ## TopShot Tiers
-
-This project is designed to help find the tier and badges of NBA Top Shot moments on-chain.
 
 ### Status
 
 Under review/testing. Will deploy to mainnet soon.
-[Reference](./TIERS.md)
 
 ### Commands
 
@@ -34,9 +32,9 @@ get_tier (account, momentID)
 
 - flow-c1 transactions send ./tiers/transactions/remove_playid.cdc 1 245
 
-## TopShot Badges
+  ### [Tiers Reference](./TIERS.md)
 
-This project is designed to help find the badges of NBA Top Shot moments on-chain.
+## TopShot Badges
 
 ### Status
 
@@ -59,7 +57,7 @@ The following are in-progress:
 ### Commands
 
 get_all_badges (account)
-flow-c1 scripts execute ./badges/scripts/get_all_badges.cdc 0xf8d6e0586b0a20c7
+- flow-c1 scripts execute ./badges/scripts/get_all_badges.cdc 0xf8d6e0586b0a20c7
 
 ## TopShot Emulator
 
@@ -74,30 +72,30 @@ JSON looks like this:
 "TopShotBadges"
 ]
 
-flow-c1 project deploy
+- flow-c1 project deploy
 
 2. (Optional) Setup second emulator user
 
-flow accounts create
+- flow-c1 accounts create
 
-flow transactions send .\topshot\transactions\setupCollection.cdc --signer=justin
+- flow transactions send .\topshot\transactions\setupCollection.cdc --signer=justin
 
 3. create_set (string)
-   flow-c1 transactions send ./topshot/transactions/create_set.cdc "First Set!"
+  - flow-c1 transactions send ./topshot/transactions/create_set.cdc "First Set!"
 
 4. create_plays (metadata found inside transaction)
-   flow-c1 transactions send ./topshot/transactions/create_plays.cdc
+  - flow-c1 transactions send ./topshot/transactions/create_plays.cdc
 
 5. mint_moment(setID: UInt32, playID: UInt32, recipientAddr: Address)
 
-flow-c1 transactions send ./topshot/transactions/mint_moment.cdc 1 1 0xf8d6e0586b0a20c7
+-flow-c1 transactions send ./topshot/transactions/mint_moment.cdc 1 1 0xf8d6e0586b0a20c7
 
 or mint_moments(setID: UInt32, playID: UInt32, recipientAddr: Address)
 
-flow-c1 transactions send ./topshot/transactions/mint_moments.cdc 1 1 5 0xf8d6e0586b0a20c7
+- flow-c1 transactions send ./topshot/transactions/mint_moments.cdc 1 1 5 0xf8d6e0586b0a20c7
 
 5. send_moments (recipientAddr: Address, momentIDs: [UInt32])
-   flow transactions send .\topshot\transactions\send_moments.cdc 0x01cf0e2f2f715450 [1,2,3,4,5]
+ - flow transactions send .\topshot\transactions\send_moments.cdc 0x01cf0e2f2f715450 [1,2,3,4,5]
 
 ## TopShot Links
 
