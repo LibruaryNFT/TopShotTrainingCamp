@@ -61,7 +61,15 @@ get_all_badges (account)
 
 ## TopShot Emulator
 
-1. Deploy TopShotLocking, TopShot, TopShotTiers, TopShotBadges
+Steps 2,3 can be ran from setup-flow.ps1
+
+Step 4 can be ran from create_sets1.cdc, create_sets2.cdc, create_sets3.cdc, create_sets4.cdc
+
+Step 5 can be ran from submit_metadata.py
+
+1. flow-c1 emulator start
+
+2. Deploy TopShotLocking, TopShot, TopShotTiers, TopShotBadges
 
 JSON looks like this:
 
@@ -74,7 +82,7 @@ JSON looks like this:
 
 - flow-c1 project deploy
 
-2. (Optional) Setup second emulator user
+3. (Optional) Setup second emulator user
 
 - flow-c1 keys generate
 - flow-c1 accounts create --key <public key>
@@ -82,17 +90,17 @@ JSON looks like this:
 - flow-c1  transactions send .\topshot\transactions\verify_collection.cdc --signer=newaccount
 - flow-c1 scripts execute .\topshot\scripts\verify.cdc 0xnewaddress
 
-3. create_set (string)
+4. create_set (string)
   - flow-c1 transactions send ./topshot/transactions/create_set.cdc "First Set!"
 
-4. create_plays (metadata found inside transaction)
+5. create_plays (metadata found inside transaction)
   - flow-c1 transactions send ./topshot/transactions/create_plays.cdc
 
-5. add_play_to_set (setID: UInt32, playID: UInt32)
+6. add_play_to_set (setID: UInt32, playID: UInt32)
 - flow-c1 transactions send ./topshot/transactions/add_play_to_set.cdc 1 1
 - flow-c1 scripts execute .\topshot\scripts\get_plays_in_set.cdc 1
 
-5. mint_moment(setID: UInt32, playID: UInt32, recipientAddr: Address)
+7. mint_moment(setID: UInt32, playID: UInt32, recipientAddr: Address)
 
 -flow-c1 transactions send ./topshot/transactions/mint_moment.cdc 1 1 0xf8d6e0586b0a20c7
 
@@ -100,10 +108,10 @@ or mint_moments(setID: UInt32, playID: UInt32, recipientAddr: Address)
 
 - flow-c1 transactions send ./topshot/transactions/mint_moments.cdc 1 1 5 0xf8d6e0586b0a20c7
 
-5. transfer_moment (recipientAddr: Address, momentID: UInt32)
+8. transfer_moment (recipientAddr: Address, momentID: UInt32)
  - flow-c1 transactions send .\topshot\transactions\transfer_moment.cdc 0x179b6b1cb6755e31 1
 
- 6. get_collection_ids (account: Address)
+ 9. get_collection_ids (account: Address)
  flow-c1 scripts execute .\topshot\scripts\get_collection_ids.cdc 0x179b6b1cb6755e31 
 
 ## TopShot Links
@@ -153,3 +161,5 @@ or mint_moments(setID: UInt32, playID: UInt32, recipientAddr: Address)
 ## Tokenomics
 
 - [FLOW Token Distribution](https://flow.com/token-distribution)
+
+
