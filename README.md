@@ -3,10 +3,53 @@
 This repo is meant as a way to share important utilities, contracts, and tools for the NBA TopShot community. It is a work in progress and will be updated as new tools are developed.
 
 Currently the repo contains the following projects:
-- TopShot Tiers - Designed to help find the tier and badges of NBA Top Shot moments on-chain.
-- TopShot Badges - Designed to help find the badges of NBA Top Shot moments on-chain.
 - TopShot Emulator - Designed to help anyone with deploying TopShot locally.
+- TopShot Tiers(in-progress) - Designed to help find the tier and badges of NBA Top Shot moments on-chain.
+- TopShot Badges(in-progress) - Designed to help find the badges of NBA Top Shot moments on-chain.
 - TopShot Links - An aggregated list of helpful resources.
+
+## TopShot Emulator Setup
+
+1. Start the emulator
+- flow-c1 emulator start
+
+2. Run the setup-flow.ps1 script. This will deploy contracts, setup a second emulator account(0x179b6b1cb6755e31) with a TopShot collection and create the sets.
+
+- ./setup-flow.ps1
+
+3. Create the plays. There are two modes, you can either create plays that do not have metadata or create plays with the exact metadata from Top Shot. Depends on your use case and creating all the metadata takes about 20 minutes compared to 4 minutes for the minimal metadata.
+
+ - .\venv\Scripts\activate
+
+- python ./topshot/tools/create_plays.py    
+
+- python ./topshot/tools/create_plays_minimal.py 
+
+4. Add plays to sets. Takes about 5 minutes.
+
+- python ./topshot/tools/add_plays_to_sets.py
+
+## TopShot Emulator Commands
+
+### Minting
+
+mint_moment(setID: UInt32, playID: UInt32, recipientAddr: Address)
+
+-flow-c1 transactions send ./topshot/transactions/mint_moment.cdc 1 1 0xf8d6e0586b0a20c7
+
+mint_moments(setID: UInt32, playID: UInt32, quantity: UInt64, recipientAddr: Address)
+
+- flow-c1 transactions send ./topshot/transactions/mint_moments.cdc 1 1 5 0xf8d6e0586b0a20c7
+
+### Transfer
+
+transfer_moment (recipientAddr: Address, momentID: UInt32)
+ - flow-c1 transactions send .\topshot\transactions\transfer_moment.cdc 0x179b6b1cb6755e31 1
+
+### Verification
+
+get_collection_ids (account: Address)
+ flow-c1 scripts execute .\topshot\scripts\get_collection_ids.cdc 0x179b6b1cb6755e31 
 
 ## TopShot Tiers
 
@@ -59,60 +102,7 @@ The following are in-progress:
 get_all_badges (account)
 - flow-c1 scripts execute ./badges/scripts/get_all_badges.cdc 0xf8d6e0586b0a20c7
 
-## TopShot Emulator
 
-Steps 2,3 can be ran from setup-flow.ps1
-
-Step 4 can be ran from create_sets1.cdc, create_sets2.cdc, create_sets3.cdc, create_sets4.cdc
-
-Step 5 can be ran from submit_metadata.py
-
-1. flow-c1 emulator start
-
-2. Deploy TopShotLocking, TopShot, TopShotTiers, TopShotBadges
-
-JSON looks like this:
-
-"emulator-account": [
-"TopShotLocking",
-"TopShot",
-"TopShotTiers",
-"TopShotBadges"
-]
-
-- flow-c1 project deploy
-
-3. (Optional) Setup second emulator user
-
-- flow-c1 keys generate
-- flow-c1 accounts create --key <public key>
-- flow-c1  transactions send .\topshot\transactions\setup_collection.cdc --signer=newaccount
-- flow-c1  transactions send .\topshot\transactions\verify_collection.cdc --signer=newaccount
-- flow-c1 scripts execute .\topshot\scripts\verify.cdc 0xnewaddress
-
-4. create_set (string)
-  - flow-c1 transactions send ./topshot/transactions/create_set.cdc "First Set!"
-
-5. create_plays (metadata found inside transaction)
-  - flow-c1 transactions send ./topshot/transactions/create_plays.cdc
-
-6. add_play_to_set (setID: UInt32, playID: UInt32)
-- flow-c1 transactions send ./topshot/transactions/add_play_to_set.cdc 1 1
-- flow-c1 scripts execute .\topshot\scripts\get_plays_in_set.cdc 1
-
-7. mint_moment(setID: UInt32, playID: UInt32, recipientAddr: Address)
-
--flow-c1 transactions send ./topshot/transactions/mint_moment.cdc 1 1 0xf8d6e0586b0a20c7
-
-or mint_moments(setID: UInt32, playID: UInt32, recipientAddr: Address)
-
-- flow-c1 transactions send ./topshot/transactions/mint_moments.cdc 1 1 5 0xf8d6e0586b0a20c7
-
-8. transfer_moment (recipientAddr: Address, momentID: UInt32)
- - flow-c1 transactions send .\topshot\transactions\transfer_moment.cdc 0x179b6b1cb6755e31 1
-
- 9. get_collection_ids (account: Address)
- flow-c1 scripts execute .\topshot\scripts\get_collection_ids.cdc 0x179b6b1cb6755e31 
 
 ## TopShot Links
 

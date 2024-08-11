@@ -1,8 +1,3 @@
-
-# flow
-emulator-account.pkey
 imports
-flow.json
 *.pkey
-mainnet-account.pkey
 venv/
