@@ -3,12 +3,18 @@
 This repo is meant as a way to share important utilities, contracts, and tools for the NBA TopShot community. It is a work in progress and will be updated as new tools are developed.
 
 Currently the repo contains the following projects:
-- TopShot Emulator - Designed to help anyone with deploying TopShot locally.
+
+- TopShot Emulator - Designed to help anyone with deploying TopShot locally and ready to mint moments. It includes the same sets and play data as found on TopShot.
+
 - TopShot Tiers(in-progress) - Designed to help find the tier and badges of NBA Top Shot moments on-chain.
+
 - TopShot Badges(in-progress) - Designed to help find the badges of NBA Top Shot moments on-chain.
+
 - TopShot Links - An aggregated list of helpful resources.
 
 ## TopShot Emulator Setup
+
+This setup will get you started with the TopShot emulator and ready to mint moments.
 
 1. Start the emulator
 - flow-c1 emulator start
@@ -21,11 +27,13 @@ Currently the repo contains the following projects:
 
  - .\venv\Scripts\activate
 
+Same Play Metadata as TopShot
 - python ./topshot/tools/create_plays.py    
 
+Empty Play Metadata
 - python ./topshot/tools/create_plays_minimal.py 
 
-4. Add plays to sets. Takes about 5 minutes.
+4. Add plays to sets. This is the exact mapping found on TopShot. Takes about 5 minutes. The script to generate the json that is used(play_metadata.json) is found in /topshot/tools/fetch_plays.py.
 
 - python ./topshot/tools/add_plays_to_sets.py
 
