@@ -1,89 +1,74 @@
 # TopShot Nexus
 
-This repo is meant as a way to share important utilities, contracts, and tools for the NBA TopShot community. It is a work in progress and will be updated as new tools are developed.
+This repo is meant as a way to share important utilities, contracts, and tools for the NBA TopShot community. It is a work in progress and will be updated as new tools are developed. This is an open-source project, feel free to contribute or open issues for any suggestions or improvements.
 
 Currently the repo contains the following projects:
 
-- TopShot Emulator - Designed to help anyone with deploying TopShot locally and ready to mint moments. It includes the same sets and play data as found on TopShot.
+- **TopShot Emulator**
+  - Designed to help anyone with deploying TopShot locally and ready to mint moments. It includes the same sets and play data as found on TopShot.
 
-- TopShot Tiers(in-progress) - Designed to help find the tier and badges of NBA Top Shot moments on-chain.
+- **TopShot Tiers** 
+  - Designed to help find the tier and badges of NBA Top Shot moments on-chain.
+  - Status: In-progress
 
-- TopShot Badges(in-progress) - Designed to help find the badges of NBA Top Shot moments on-chain.
+- **TopShot Badges**
+  - Designed to help find the badges of NBA Top Shot moments on-chain.
+  - Status: In-progress
 
-- TopShot Links - An aggregated list of helpful resources.
+- **TopShot Links**
+   - An aggregated list of helpful resources.
 
 ## TopShot Emulator Setup
-
 This setup will get you started with the TopShot emulator and ready to mint moments.
+### [TopShot Emulator Commands Reference](./EMULATOR.md)
 
 1. Start the emulator
-- flow-c1 emulator start
+```bash
+flow-c1 emulator start
+```
 
 2. Run the setup-flow.ps1 script. This will deploy contracts, setup a second emulator account(0x179b6b1cb6755e31) with a TopShot collection and create the sets.
+```bash
+./setup-flow.ps1
+```
 
-- ./setup-flow.ps1
+3. Create the plays. There are two options, Verbose or Minimal Mode. You can either create plays that do not have metadata or create plays with the exact metadata from Top Shot. Depends on your use case and creating all the metadata takes about 20 minutes compared to 4 minutes for the minimal metadata.
 
-3. Create the plays. There are two modes, you can either create plays that do not have metadata or create plays with the exact metadata from Top Shot. Depends on your use case and creating all the metadata takes about 20 minutes compared to 4 minutes for the minimal metadata.
+Create a python virtual environment
+```bash
+python -m venv venv
+```
 
- - .\venv\Scripts\activate
+Activate the Virtual environment
 
-Same Play Metadata as TopShot
-- python ./topshot/tools/create_plays.py    
+```bash
+.\venv\Scripts\activate
+```
 
-Empty Play Metadata
-- python ./topshot/tools/create_plays_minimal.py 
+Option 1: Verbose Mode: Same Play Metadata as TopShot 
 
-4. Add plays to sets. This is the exact mapping found on TopShot. Takes about 5 minutes. The script to generate the json that is used(play_metadata.json) is found in /topshot/tools/fetch_plays.py.
+```bash
+python ./topshot/tools/create_plays.py
+```
 
-- python ./topshot/tools/add_plays_to_sets.py
+Option 2: Minimal Mode: Empty Play Metadata
 
-## TopShot Emulator Commands
+```bash
+python ./topshot/tools/create_plays_minimal.py
+```
 
-### Minting
-
-mint_moment(setID: UInt32, playID: UInt32, recipientAddr: Address)
-
--flow-c1 transactions send ./topshot/transactions/mint_moment.cdc 1 1 0xf8d6e0586b0a20c7
-
-mint_moments(setID: UInt32, playID: UInt32, quantity: UInt64, recipientAddr: Address)
-
-- flow-c1 transactions send ./topshot/transactions/mint_moments.cdc 1 1 5 0xf8d6e0586b0a20c7
-
-### Transfer
-
-transfer_moment (recipientAddr: Address, momentID: UInt32)
- - flow-c1 transactions send .\topshot\transactions\transfer_moment.cdc 0x179b6b1cb6755e31 1
-
-### Verification
-
-get_collection_ids (account: Address)
- flow-c1 scripts execute .\topshot\scripts\get_collection_ids.cdc 0x179b6b1cb6755e31 
-
+Add plays to sets. This is the exact mapping found on TopShot. Takes about 5 minutes. The script to generate the json that is used(play_metadata.json) is found in /topshot/tools/fetch_plays.py.
+  
+```bash
+python ./topshot/tools/add_plays_to_sets.py
+```
 ## TopShot Tiers
 
 ### Status
 
 Under review/testing. Will deploy to mainnet soon.
 
-### Commands
-
-get_tier (account, momentID)
-
-- flow-c1 scripts execute ./tiers/scripts/get_tier.cdc 0xf8d6e0586b0a20c7 1
-
-(Admin) update_default_tier (setID: UInt32, tierRawValue: UInt8)
-
-- flow-c1 transactions send ./tiers/transactions/update_default_tier.cdc 1 2
-
-(Admin) update_mixed_tier (setID: UInt32, playID: UInt32, tierRawValue: UInt8)
-
-- flow-c1 transactions send ./tiers/transactions/update_mixed_tier.cdc
-
-(Admin) remove_playid.cdc (setID: UInt32, playID: UInt32)
-
-- flow-c1 transactions send ./tiers/transactions/remove_playid.cdc 1 245
-
-  ### [Tiers Reference](./TIERS.md)
+### [Tiers Commands Reference](./TIERS.md)
 
 ## TopShot Badges
 
@@ -107,10 +92,15 @@ The following are in-progress:
 
 ### Commands
 
-get_all_badges (account)
-- flow-c1 scripts execute ./badges/scripts/get_all_badges.cdc 0xf8d6e0586b0a20c7
+#### get_all_badges
+- **Description**: Retrieves all badges associated with a specified account.
+- **Input Parameters**:
+  - `account: Address` - The Flow account address to query (e.g., `0xf8d6e0586b0a20c7`).
+- **Example Usage**:
 
-
+```bash
+  flow-c1 scripts execute ./badges/scripts/get_all_badges.cdc 0xf8d6e0586b0a20c7
+```
 
 ## TopShot Links
 
