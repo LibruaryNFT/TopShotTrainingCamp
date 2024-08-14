@@ -1,4 +1,4 @@
-# TopShot Nexus
+# TopShot Nexus!
 
 This repo is meant as a way to share important utilities, contracts, and tools for the NBA TopShot community. It is a work in progress and will be updated as new tools are developed. This is an open-source project, feel free to contribute or open issues for any suggestions or improvements.
 
