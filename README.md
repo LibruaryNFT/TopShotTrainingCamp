@@ -15,24 +15,22 @@ Currently the repo contains the following projects:
   - Designed to help find the badges of NBA Top Shot moments on-chain.
   - Status: In-progress
 
-- **TopShot Links**
-   - An aggregated list of helpful resources.
-
 ## TopShot Emulator Setup
-This setup will get you started with the TopShot emulator and ready to mint moments.
+This guide will help you set up the TopShot emulator, allowing you to start minting moments quickly.
+
+You can choose from three setup options, depending on your needs and the level of detail you require:
+
+- Express Setup: A quick start with only 18 plays and 1 set. This setup takes just a minute to complete, providing the fastest way to get started with the TopShot emulator.
+- Basic Setup: A more detailed setup with 5511 empty plays data and 160 sets data. This setup is a closer representation of the Mainnet TopShot contract and takes about 4 minutes to complete.
+- Full Setup: The most comprehensive setup, including 5511 full plays data and 160 full sets data. This setup is the most accurate representation of the Mainnet TopShot contract and takes around 15 minutes to complete.
+
 ### [TopShot Emulator Commands Reference](./EMULATOR.md)
 
-1. Start the emulator
-```bash
-flow-c1 emulator start
-```
+After completing your setup, refer to the **TopShot Emulator Commands Reference** for detailed instructions on how to mint moments, transfer them, and execute other commands using the emulator. This document will guide you through all the necessary commands to manage and interact with your TopShot moments effectively.
 
-2. Run the setup-flow.ps1 script. This will deploy contracts, setup a second emulator account(0x179b6b1cb6755e31) with a TopShot collection and create the sets.
-```bash
-./setup-flow.ps1
-```
+### Python Setup
 
-3. Create the plays. There are two options, Verbose or Minimal Mode. You can either create plays that do not have metadata or create plays with the exact metadata from Top Shot. Depends on your use case and creating all the metadata takes about 20 minutes compared to 4 minutes for the minimal metadata.
+If you are running the Basic or Full Setup, you will need a Python Virtual Environment
 
 Create a python virtual environment
 ```bash
@@ -45,23 +43,39 @@ Activate the Virtual environment
 .\venv\Scripts\activate
 ```
 
-Option 1: Verbose Mode: Same Play Metadata as TopShot 
+### Express Setup 
 
 ```bash
-python ./topshot/tools/create_plays.py
+
+flow-c1 emulator start
+./setup-flow.ps1
+flow-c1 transactions send ./topshot/transactions/create_custom_plays.cdc
+flow-c1 transactions send ./topshot/transactions/add_plays_to_sets.cdc 1 [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
+flow-c1 transactions send ./topshot/transactions/mint_moments.cdc 1 1 5 0xf8d6e0586b0a20c7
+flow-c1 transactions send .\topshot\transactions\transfer_moment.cdc 0x179b6b1cb6755e31 1
+flow-c1 transactions send .\topshot\transactions\verify_entitlements.cdc 0x179b6b1cb6755e31
+flow-c1 scripts execute .\topshot\scripts\verify_collection.cdc 0x179b6b1cb6755e31
 ```
 
-Option 2: Minimal Mode: Empty Play Metadata
+### Basic Setup 
 
 ```bash
+flow-c1 emulator start
+./setup-flow.ps1
 python ./topshot/tools/create_plays_minimal.py
-```
-
-Add plays to sets. This is the exact mapping found on TopShot. Takes about 5 minutes. The script to generate the json that is used(play_metadata.json) is found in /topshot/tools/fetch_plays.py.
-  
-```bash
 python ./topshot/tools/add_plays_to_sets.py
 ```
+
+### Full Setup 
+
+```bash
+flow-c1 emulator start
+./setup-flow.ps1
+python ./topshot/tools/create_plays.py
+python ./topshot/tools/add_plays_to_sets.py
+
+```
+
 ## TopShot Tiers
 
 ### Status
@@ -101,53 +115,3 @@ The following are in-progress:
 ```bash
   flow-c1 scripts execute ./badges/scripts/get_all_badges.cdc 0xf8d6e0586b0a20c7
 ```
-
-## TopShot Links
-
-**Repos**
-
-- [Dapper Labs NBA Smart Contracts](https://github.com/dapperlabs/nba-smart-contracts)
-- [TopShot Explorer by rrrkren](https://github.com/rrrkren/topshot-explorer)
-
-**Tools**
-
-- [Current TopShot Wallet](https://flow-view-source.com/mainnet/account/0x0b2a3299cc857e29/contract/TopShot)
-  - [Media Gateway Documentation](https://developers.nbatopshot.com/docs/Media%20Gateway/index.html)
-
-## Flow Community
-
-**Repos**
-
-- [Emerald DAO](https://github.com/emerald-dao)
-
-**Tools**
-
-- [Flow Developer Documentation](https://developers.flow.com/)
-- [Flow NFT Catalog](https://www.flow-nft-catalog.com/)
-- [Graffle](https://www.graffle.io/)
-- [ECDAO Documentation](https://docs.ecdao.org/)
-- [ECDAO Links](https://link.ecdao.org/)
-- [Dapper Labs Developer Portal](https://developers.dapperlabs.com/)
-
-**Migration to Cadence 1.0**
-
-- [Migration ChatGPT Bot](https://chatgpt.com/g/g-lt4a6jvfj-flow-cadence-1-0-migration-helper)
-- [Contract Browser](https://contractbrowser.com/)
-- [Cadence Migration Guide](https://cadence-lang.org/docs/cadence-migration-guide)
-- [Previewnet Deployment](https://previewnet.flowdiver.io/account/0x31c25c145e66dbe9) - Dapper team's most recent deployment to Previewnet for C1
-- [Previewnet NFT Contract](https://previewnet.flowdiver.io/contract/A.002bb351357cf238.NonFungibleToken?tab=deployments) - Most recent NFT contract on Previewnet
-- [NBA-2865-upgrade-flow-sdk branch](https://github.com/dapperlabs/nba-smart-contracts/tree/judez/NBA-2865-upgrade-flow-sdk/transactions/admin)
-  They are actively updating the content for C1. You can dig through some of the branches for the latest C1 code.
-
-## Flow Ecosystem Analytics
-
-- [FlowDiver Analytics](https://www.flowdiver.io/analytics?interval=1Y)
-- [FindLabs API](https://findonflow.github.io/findlabs-api/)
-- FindLabs is working on a new API, but the historical API 1.1.0 should work:
-- [Flipside Crypto Flow Models](https://flipsidecrypto.github.io/flow-models/#!/overview/flow_models)
-
-## Tokenomics
-
-- [FLOW Token Distribution](https://flow.com/token-distribution)
-
-
